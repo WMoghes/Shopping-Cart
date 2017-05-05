@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        .carousel-inner>.item>a>img, .carousel-inner>.item>img, .img-responsive, .thumbnail a>img, .thumbnail>img {
+            height: 320px;
+        }
+        .price-label {
+            position: absolute;
+            bottom: 160px;
+            background-color: rgba(13, 13, 13, 0.86);
+            color: aliceblue;
+            font-size: larger;
+            padding: 10px;
+            left: 16px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-6 col-md-4">
+            {% include 'includes/thumbnail.html.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
