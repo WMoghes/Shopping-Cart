@@ -1,0 +1,52 @@
+<table class="table table-bordered text-center">
+    <thead>
+    <tr>
+        <th></th>
+        <th class="table-header">Product Name</th>
+        <th class="table-header">Price</th>
+        <th class="table-header">Quantity</th>
+        <th class="table-header">Cost</th>
+        <th class="table-header">status</th>
+        <th class="table-header">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for myItem in myItems %}
+        <tr id="product-{{ myItem.id }}" class="{{ (currentCart[myItem.id] > myItem.productQuantity) ? 'not-available' : 'available' }}">
+            <td style="width: 200px">
+                <img src="{{ asset("uploads/products/") ~ myItem.productImage  }}" class="img-responsive">
+            </td>
+            <td>{{ myItem.productName }}</td>
+            <td>{{ myItem.productPrice }} $</td>
+            <td id="update-{{ myItem.id }}">{{ currentCart[myItem.id] }}</td>
+            <td id="cost-{{ myItem.id }}">{{ myItem.productPrice * currentCart[myItem.id] }} $</td>
+            <td>
+                {{ (currentCart[myItem.id] > myItem.productQuantity) ? 'Not Available' : 'Available' }}
+            </td>
+            <td>
+                <a onclick="remove('product-{{ myItem.id }}', event, this.href)" href="{{ path('remove_product', {'productId': myItem.id}) }}">
+                    Remove This product
+                </a>
+
+                <p>
+                    <input type="checkbox" id="edit-{{ myItem.id }}" onclick="show({{ myItem.id }})">
+                    <label for="edit-{{ myItem.id }}">Edit On Quantity</label>
+                </p>
+
+                <div id="edit-on-quantity-{{ myItem.id }}" style="display: none;" class="update">
+                    <input type="text" id="quantity-{{ myItem.id }}" style="width: 60px" value="1">
+                    <a href="{{ path('change_user_quantity', {'productId': myItem.id}) }}" onclick="quantityUpdate('update-{{ myItem.id }}', event, this.href, {{ myItem.id }})" class="btn btn-default">Update</a>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+
+    <tr>
+        <td>Total Amount</td>
+        <td id="total-amount">{{ totalAmount }} $</td>
+        <td>
+            <a onclick="alert('under development')" class="btn btn-primary">Proceed to checkout</a>
+        </td>
+    </tr>
+    </tbody>
+</table>

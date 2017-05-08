@@ -6,3 +6,21 @@
 <script src="{{ asset('dist/js/bootstrap.min.js') }}"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="{{ asset('assets/js/ie10-viewport-bug-workaround.js') }}"></script>
+
+<script>
+    $(document).on('click', '#empty-cart', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        var itemCount = $('#item-count');
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function() {
+                itemCount.html(0);
+                if (window.location.href.indexOf('display-my-cart') > -1) {
+                    window.location = '{{ path('homepage') }}';
+                }
+            }
+        });
+    });
+</script>

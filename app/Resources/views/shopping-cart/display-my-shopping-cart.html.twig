@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Display My Shopping Cart
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .available {
+            background-color: mintcream;
+            vertical-align:inherit;
+        }
+        .not-available {
+            background-color: crimson;
+            color: white;
+            vertical-align:inherit;
+        }
+        .table-header {
+            text-align: center;
+            background-color: #00AA88;
+        }
+        .update {
+            background-color: darkcyan;
+            padding: 7px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>My Shopping Cart</h1>
+            <div id="shopping-cart">
+                {% include 'shopping-cart/display-shopping-cart-includes/table-display.html.twig' with {'myItems': myItems, 'currentCart': currentCart} %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        /**
+         * This function used to remove item from user shopping cart by using ajax
+         * @param id
+         * @param event
+         * @param url
+         */
+        function remove(id, event, url) {
+            event.preventDefault();
+
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function(data) {
+                    $('#' + id).remove();
+                    $('#item-count').html(data.totalCountOfItems);
+                    if (parseInt(data.totalAmount) === 0) {
+                        $('#shopping-cart').html('<h1>You don\'t have any items in your shopping cart</h1>');
+                    } else {
+                        $('#total-amount').html(data.totalAmount + ' $');
+                    }
+                }
+            });
+        }
+
+        /**
+         * Used to display input text to insert the new quantity
+         * @param productId
+         */
+        function show(productId) {
+            var el = $('#edit-on-quantity-' + productId);
+            var edit = $('#edit-' + productId);
+            if (el.attr('style') === 'display: none;') {
+                el.show();
+            } else {
+                el.hide();
+                edit.attr('checked', false);
+            }
+        }
+
+        /**
+         * Used to update the quantity by using ajax
+         * @param id
+         * @param event
+         * @param url
+         * @param productId
+         */
+        function quantityUpdate(id, event, url, productId) {
+            event.preventDefault();
+            var quantity = $('#quantity-' + productId).val();
+            var div_productId = $('#product-' + productId);
+            $.ajax({
+                type: 'post',
+                url: url,
+                data: {
+                    'quantity': quantity
+                },
+                success: function(data) {
+                    $('#' + id).html(data.quantity);
+                    $('#item-count').html(data.totalCountOfItems);
+                    $('#total-amount').html(data.totalAmount + ' $');
+                    $('#cost-' + productId).html(parseInt(data.productPrice) * parseInt(data.quantity) + ' $');
+                    show(productId);
+                    if (data.quantity > data.productQuantity) {
+                            div_productId.addClass('not-available'); div_productId.removeClass('available');
+                    } else {
+                            div_productId.removeClass('not-available'); div_productId.addClass('available');
+                    }
+                }
+            });
+        }
+    </script>
+{% endblock %}
+

@@ -24,7 +24,7 @@
 {% block body %}
     <div class="row">
         {% for product in products %}
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-4">
                 {% include 'includes/thumbnail.html.twig' with {'product': product} %}
             </div>
         {% endfor %}
@@ -35,11 +35,13 @@
     <script>
         $(document).on('click', '#add-to-cart', function(e) {
             e.preventDefault();
+            var url = $(this).attr('href');
+            var itemCount = $('#item-count');
             $.ajax({
-                url: '{{ path('add_to_cart', {'productId': 6}) }}',
+                url: url,
                 type: 'get',
                 success: function(data) {
-
+                    itemCount.html(data);
                 }
             });
         });

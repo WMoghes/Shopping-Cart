@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class MainController extends Controller
 {
     /**
+     * Used to get all products from database and display it into the homepage
      * @Route("/", name="homepage")
      */
     public function indexAction()
@@ -17,7 +18,8 @@ class MainController extends Controller
             ->findAll();
 
         return $this->render('shopping-cart/index.html.twig', [
-            'products' => $products
+            'products' => $products,
+            'totalCountOfItems' => getTotalCountOfItems()
         ]);
     }
 }

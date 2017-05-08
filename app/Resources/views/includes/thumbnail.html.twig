@@ -1,15 +1,18 @@
 <div class="thumbnail">
-    <a href="{{ path('product_details', {'id': product.id}) }}">
-        <img src="{{ asset("uploads/products/") ~ product.productImage  }}" class="img-responsive">
-        <div class="price-label">
-            <span>{{ product.productPrice }}$</span>
-        </div>
-    </a>
+
+    <img src="{{ asset("uploads/products/") ~ product.productImage  }}" class="img-responsive">
+    <div class="price-label">
+        <span>{{ product.productPrice }}$</span>
+    </div>
+
     <div class="caption">
         <h4>{{ product.productName }}</h4>
         <p>
             {{ product.productDescription }}
         </p>
-        <a href="#" class="btn btn-primary" id="add-to-cart">Add to Cart</a>
+        <div class="pull-right">
+            Available Quantity: {{ product.productQuantity }}
+        </div>
+        <a href="{{ path('add_to_cart', {'productId': product.id}) }}" class="btn btn-primary" id="add-to-cart">Add to Cart</a>
     </div>
 </div>
